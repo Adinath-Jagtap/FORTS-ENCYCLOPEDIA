@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ganpatipule Trip Plan 🛵</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #E8732A;
+    --saffron-light: #F5A05A;
+    --saffron-pale: #FDF0E8;
+    --ocean: #1A6B8A;
+    --ocean-light: #3A9DBF;
+    --ocean-pale: #E8F4F8;
+    --temple: #7B3FA0;
+    --temple-pale: #F3EDF8;
+    --green: #2A7A4B;
+    --green-pale: #E8F5EE;
+    --sand: #F9F4ED;
+    --dark: #1C1A17;
+    --mid: #5A5650;
+    --light: #9A948C;
+    --border: #E8E2D9;
+    --white: #FFFFFF;
+    --red: #C0392B;
+    --red-pale: #FDECEA;
+    --amber: #D4830A;
+    --amber-pale: #FEF5E4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .hero {
+    background: var(--dark);
+    color: var(--white);
+    padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(232,115,42,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,107,138,0.2) 0%, transparent 50%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--saffron-light);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 8vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--saffron-light); }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .stat {
+    padding: 12px 20px 12px 0;
+    margin-right: 20px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--saffron-light);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+  }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: var(--ocean);
+    color: white;
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .alert-banner .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--light);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .nav-tab.active { color: var(--saffron); border-bottom-color: var(--saffron); }
+  .nav-tab:hover:not(.active) { color: var(--mid); }
+
+  /* MAIN */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* DAY SECTION */
+  .day-section { display: none; }
+  .day-section.active { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+  }
+  .day-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .day-badge .day-num { font-size: 20px; line-height: 1; }
+  .day-badge .day-name { font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; opacity: 0.85; }
+  .badge-sat { background: var(--saffron-pale); color: var(--saffron); }
+  .badge-sun { background: var(--ocean-pale); color: var(--ocean); }
+  .badge-mon { background: var(--green-pale); color: var(--green); }
+  .day-header-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .day-header-text p {
+    font-size: 12px;
+    color: var(--light);
+    line-height: 1.5;
+  }
+  .dir-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+  .dir-south { background: var(--saffron-pale); color: var(--saffron); }
+  .dir-north { background: var(--ocean-pale); color: var(--ocean); }
+  .dir-walk { background: var(--green-pale); color: var(--green); }
+  .dir-home { background: var(--temple-pale); color: var(--temple); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .tl-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    left: -32px;
+    top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 1px var(--border);
+    z-index: 1;
+  }
+  .dot-temple { background: var(--temple); }
+  .dot-beach { background: var(--ocean); }
+  .dot-ride { background: var(--saffron); }
+  .dot-food { background: #D4830A; }
+  .dot-spot { background: var(--green); }
+  .dot-bus { background: var(--red); }
+  .dot-sleep { background: var(--light); }
+
+  .tl-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    transition: box-shadow 0.2s;
+  }
+  .tl-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+  .tl-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--light);
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+  }
+  .tl-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .tl-desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+  }
+  .tag-imp { background: #FDECEA; color: var(--red); }
+  .tag-free { background: var(--green-pale); color: var(--green); }
+  .tag-km { background: var(--saffron-pale); color: var(--saffron); }
+  .tag-warn { background: var(--amber-pale); color: var(--amber); }
+  .tag-rupee { background: var(--ocean-pale); color: var(--ocean); }
+
+  /* RIDE CARD */
+  .ride-card {
+    background: var(--saffron-pale);
+    border: 1px solid rgba(232,115,42,0.25);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--saffron);
+    font-weight: 500;
+  }
+  .ride-card .km { margin-left: auto; font-size: 12px; font-weight: 600; }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; }
+  .callout-content strong { display: block; font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .callout-warn { background: var(--amber-pale); color: #7A4A00; }
+  .callout-info { background: var(--ocean-pale); color: #0A3A50; }
+  .callout-success { background: var(--green-pale); color: #174D2E; }
+  .callout-red { background: var(--red-pale); color: #7A1A1A; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin: 24px 0 12px;
+  }
+
+  /* BUDGET PAGE */
+  .budget-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 480px) { .budget-grid { grid-template-columns: 1fr; } }
+
+  .budget-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .budget-card .bc-icon { font-size: 22px; margin-bottom: 8px; }
+  .budget-card .bc-label { font-size: 11px; color: var(--light); margin-bottom: 3px; font-weight: 500; }
+  .budget-card .bc-amount { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); }
+  .budget-card .bc-sub { font-size: 11px; color: var(--light); margin-top: 2px; }
+
+  .budget-total {
+    background: var(--dark);
+    color: var(--white);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .bt-label { font-size: 13px; color: rgba(255,255,255,0.65); }
+  .bt-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--saffron-light); }
+  .bt-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+  .breakdown-table {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .bt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .bt-row:last-child { border-bottom: none; }
+  .bt-row-label { color: var(--mid); }
+  .bt-row-amt { font-weight: 600; color: var(--dark); }
+  .bt-row.total-row { background: var(--saffron-pale); }
+  .bt-row.total-row .bt-row-label { color: var(--saffron); font-weight: 600; }
+  .bt-row.total-row .bt-row-amt { color: var(--saffron); font-size: 15px; }
+
+  /* INFO PAGE */
+  .info-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .info-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-card p, .info-card li {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+  .info-card ul { padding-left: 16px; }
+  .info-card li { margin-bottom: 4px; }
+
+  .scooty-seats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .seat-card {
+    background: var(--saffron-pale);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+  }
+  .seat-card .seat-icon { font-size: 22px; margin-bottom: 4px; }
+  .seat-card .seat-label { font-weight: 600; color: var(--saffron); font-size: 11px; }
+  .seat-card .seat-names { color: var(--mid); font-size: 11px; margin-top: 2px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--light);
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
+  }
+  footer strong { color: var(--mid); }
+
+  /* SCROLL ANIMATION */
+  .fade-in { animation: fadeIn 0.4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 600px) {
+    .hero { padding: 36px 16px 32px; }
+    .hero-stats { gap: 0; }
+    .stat { padding: 10px 14px 10px 0; margin-right: 14px; }
+    .stat-val { font-size: 18px; }
+    .container { padding: 16px 12px 48px; }
+    .nav-tab { padding: 12px 14px; font-size: 12px; }
+    .budget-total { flex-direction: column; align-items: flex-start; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span>🛵</span> Ganpatipule Trip Plan 2025
+    </div>
+    <h1>Ganpati <span>Pule</span><br>Gang Trip</h1>
+    <p class="hero-sub">7 friends · 2 days · 3 scooties · Full Konkan experience<br>28–30 March 2025 · Navi Mumbai → Ganpatipule</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val">7</div>
+        <div class="stat-label">Friends</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">3</div>
+        <div class="stat-label">Scooties</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">₹2,200</div>
+        <div class="stat-label">Per Person</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">8</div>
+        <div class="stat-label">Spots</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT -->
+<div class="alert-banner">
+  <span class="icon">📌</span>
+  <span><strong>Book these NOW:</strong> Bhakta Niwas +91 86699 31145 (2 rooms Sat night) · Return bus on RedBus — Sun 29 March 5:45–6:30 PM Ganpatipule → Panvel/Nerul/Kharghar</span>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('day1')">Sat 28</div>
+  <div class="nav-tab" onclick="showTab('day2')">Sun 29</div>
+  <div class="nav-tab" onclick="showTab('return')">Return</div>
+  <div class="nav-tab" onclick="showTab('budget')">Budget</div>
+  <div class="nav-tab" onclick="showTab('info')">Info</div>
+</div>
+
+<div class="container">
+
+<!-- DAY 1 -->
+<div class="day-section active fade-in" id="day1">
+  <div class="day-header">
+    <div class="day-badge badge-sat">
+      <div class="day-num">28</div>
+      <div class="day-name">Saturday</div>
+    </div>
+    <div class="day-header-text">
+      <h2>Arrive + South Direction</h2>
+      <p>8 AM arrival at Bhakta Niwas → Temple → Beach → Scooties → Arey Vare → Bhandarpule → Evening Aarti</p>
+      <span class="dir-tag dir-south">↓ South on Scooties</span>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">🛵</span>
+    <div class="callout-content">
+      <strong>Scooty plan for today</strong>
+      3 scooties rented from local shop near Bhakta Niwas (ask reception for contacts). Pick up after lunch around 2 PM. ₹700 per scooty. All 3 riders carry original licence.
+    </div>
+  </div>
+
+  <div class="section-label">Morning — Walk Only</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-temple"></div>
+      <div class="tl-card">
+        <div class="tl-time">8:00 AM</div>
+        <div class="tl-title">Arrive Bhakta Niwas + Check In</div>
+        <div class="tl-desc">Drop bags, shower immediately — hot water only in the morning. Ask reception for scooty rental contacts.</div>
+        <div class="tags"><span class="tag tag-rupee">₹700 × 2 rooms total</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-food"></div>
+      <div class="tl-card">
+        <div class="tl-time">8:30 AM</div>
+        <div class="tl-title">Breakfast at Bhakta Niwas</div>
+        <div class="tl-desc">Unlimited Maharashtrian thali. Best value near the temple.</div>
+        <div class="tags"><span class="tag tag-rupee">₹100/person</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-temple"></div>
+      <div class="tl-card">
+        <div class="tl-time">9:30 AM → 11:30 AM</div>
+        <div class="tl-title">Shree Ganpatipule Mandir + Pradakshina</div>
+        <div class="tl-desc">1 km walk from Bhakta Niwas. Swayambhu Ganesha — the soul of this trip. Do the full pradakshina path around the temple hill right on the shoreline. Open 5 AM–9 PM. Take your time here.</div>
+        <div class="tags"><span class="tag tag-imp">MUST DO</span><span class="tag tag-free">Free</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-beach"></div>
+      <div class="tl-card">
+        <div class="tl-time">11:30 AM → 1:00 PM</div>
+        <div class="tl-title">Ganpatipule Beach</div>
+        <div class="tl-desc">Right next to the mandir. Swim, walk along the shore, relax. Clean calm water, not too rough. No travel needed.</div>
+        <div class="tags"><span class="tag tag-free">Free</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-food"></div>
+      <div class="tl-card">
+        <div class="tl-time">1:00 PM → 2:00 PM</div>
+        <div class="tl-title">Lunch — Local Beach Shack</div>
+        <div class="tl-desc">Fresh Konkani thali — fish or veg. Eat on the beach road. Avoid resort restaurants — overpriced. Eat well before the ride.</div>
+        <div class="tags"><span class="tag tag-rupee">₹130–160/person</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Afternoon — Scooty Ride South</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="tl-card">
+        <div class="tl-time">2:00 PM</div>
+        <div class="tl-title">Pick Up Scooties 🛵🛵🛵</div>
+        <div class="tl-desc">3 scooties from local rental. Check fuel before leaving. Helmets mandatory. Carry original DL — Ratnagiri police check tourists.</div>
+        <div class="tags"><span class="tag tag-warn">Carry Original DL</span><span class="tag tag-rupee">₹700/scooty</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Ride south on coastal road</span>
+        <span class="km">14 km · ~25 min</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-beach"></div>
+      <div class="tl-card">
+        <div class="tl-time">2:45 PM → 5:00 PM</div>
+        <div class="tl-title">Arey Vare Beach — Full Daylight</div>
+        <div class="tl-desc">2+ hours in perfect afternoon light. Unique black and white sand beach surrounded by hills on both sides. Zip line (₹150), camel rides, bullock cart all available in the afternoon. One of the most beautiful beaches in Konkan — don't rush this.</div>
+        <div class="tags"><span class="tag tag-imp">HIGHLIGHT</span><span class="tag tag-rupee">Zip line ₹150 optional</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Short ride uphill</span>
+        <span class="km">3–5 km · ~10 min</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-spot"></div>
+      <div class="tl-card">
+        <div class="tl-time">5:10 PM → 6:00 PM</div>
+        <div class="tl-title">Bhandarpule Viewpoint — Golden Hour</div>
+        <div class="tl-desc">Hilltop panoramic view of the entire Konkan coastline in golden hour light. This is exactly the right time to be here — sky turns orange over the sea. Free, no entry. Best photography spot of Day 1.</div>
+        <div class="tags"><span class="tag tag-free">Free</span><span class="tag tag-imp">Golden Hour View</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Ride back north to Ganpatipule</span>
+        <span class="km">17 km · ~30 min</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Evening</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-temple"></div>
+      <div class="tl-card">
+        <div class="tl-time">6:45 PM → 7:30 PM</div>
+        <div class="tl-title">Evening Aarti at Ganpatipule Mandir</div>
+        <div class="tl-desc">Temple glows in the evening. Bells, incense, sea breeze. The most peaceful moment of Day 1. Don't skip this.</div>
+        <div class="tags"><span class="tag tag-free">Free</span><span class="tag tag-imp">DON'T SKIP</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-food"></div>
+      <div class="tl-card">
+        <div class="tl-time">8:00 PM</div>
+        <div class="tl-title">Dinner at Bhakta Niwas + Early Sleep</div>
+        <div class="tl-desc">Unlimited thali ₹100/person. Tomorrow starts at 4:30 AM sharp. Book return bus RIGHT NOW before sleeping — RedBus, Sun 29 March evening departure.</div>
+        <div class="tags"><span class="tag tag-rupee">₹100/person</span><span class="tag tag-warn">Sleep early!</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DAY 2 -->
+<div class="day-section fade-in" id="day2">
+  <div class="day-header">
+    <div class="day-badge badge-sun" style="background: var(--ocean-pale); color: var(--ocean);">
+      <div class="day-num">29</div>
+      <div class="day-name">Sunday</div>
+    </div>
+    <div class="day-header-text">
+      <h2>Sunrise South → Then North</h2>
+      <p>4:30 AM wake → Mandir → Arey Vare sunrise → back → Jaigad cluster → Lighthouse 4 PM → Evening bus home</p>
+      <span class="dir-tag dir-south">↓ Dawn South</span>
+      <span class="dir-tag dir-north" style="margin-left:4px;">↑ Then North</span>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⏰</span>
+    <div class="callout-content">
+      <strong>Wake up 4:30 AM</strong>
+      Big day — south at sunrise, north after breakfast, lighthouse at 4 PM exactly, bus home by 6:30 PM. Everything is timed. Don't oversleep.
+    </div>
+  </div>
+
+  <div class="section-label">Pre-Dawn — Mandir + Sunrise Ride</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-temple"></div>
+      <div class="tl-card">
+        <div class="tl-time">5:00 AM</div>
+        <div class="tl-title">Early Morning Darshan — Ganpatipule Mandir</div>
+        <div class="tl-desc">Temple opens 5 AM sharp. Just you and a handful of devotees — completely silent, most divine experience of the trip. Walk there (1 km). 25 min darshan + walk back.</div>
+        <div class="tags"><span class="tag tag-imp">BEST DARSHAN</span><span class="tag tag-free">Free</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Ride south in the dark — sky turns pink</span>
+        <span class="km">14 km · ~25 min</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-beach"></div>
+      <div class="tl-card">
+        <div class="tl-time">5:55 AM → 8:00 AM</div>
+        <div class="tl-title">Arey Vare Beach — SUNRISE 🌅</div>
+        <div class="tl-desc">Completely empty beach. Nobody around. Untouched black and white sand, waves in the first light of day. Since you explored it yesterday, today you just experience it fully — sit, walk, breathe. This is the moment of the entire trip. 2 full hours here.</div>
+        <div class="tags"><span class="tag tag-imp">TRIP HIGHLIGHT</span><span class="tag tag-free">Free</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-spot"></div>
+      <div class="tl-card">
+        <div class="tl-time">8:00 AM → 8:35 AM</div>
+        <div class="tl-title">Bhandarpule Viewpoint — Morning Mist</div>
+        <div class="tl-desc">3–5 km from Arey Vare. You saw golden hour yesterday — morning mist over the sea hits completely differently. 30 min stop.</div>
+        <div class="tags"><span class="tag tag-free">Free</span><span class="tag tag-km">3–5 km · 10 min</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Ride back north to Bhakta Niwas</span>
+        <span class="km">17 km · ~30 min</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Morning — Breakfast + Checkout</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-food"></div>
+      <div class="tl-card">
+        <div class="tl-time">9:15 AM</div>
+        <div class="tl-title">Breakfast at Bhakta Niwas + Checkout</div>
+        <div class="tl-desc">Last thali ₹100. Check out of rooms. Tie bags on scooties or leave at reception. You are not returning here tonight.</div>
+        <div class="tags"><span class="tag tag-rupee">₹100/person</span><span class="tag tag-warn">Checkout today</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Ride north toward Jaigad</span>
+        <span class="km">19 km · ~35 min</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">North Direction — Jaigad Cluster</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-temple"></div>
+      <div class="tl-card">
+        <div class="tl-time">11:05 AM → 12:15 PM</div>
+        <div class="tl-title">Jai Vinayak Mandir, Jaigad</div>
+        <div class="tl-desc">JSW-built Ganpati temple — stunning modern architecture, art gallery inside, lush green campus. Completely peaceful in the morning. One of the most beautiful temples in Ratnagiri. Minimum 1 hour here.</div>
+        <div class="tags"><span class="tag tag-imp">MUST VISIT</span><span class="tag tag-free">Free</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Short ride to fort</span>
+        <span class="km">2 km · 5 min</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-spot"></div>
+      <div class="tl-card">
+        <div class="tl-time">12:20 PM → 1:15 PM</div>
+        <div class="tl-title">Jaigad Fort</div>
+        <div class="tl-desc">16th century Bijapur-era coastal fort. Walk the full perimeter ramparts — the Shastri river meets the Arabian Sea right below you. Spectacular midday views. 50 min to explore properly.</div>
+        <div class="tags"><span class="tag tag-free">Free Entry</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-food"></div>
+      <div class="tl-card">
+        <div class="tl-time">1:15 PM → 2:15 PM</div>
+        <div class="tl-title">Lunch Near Jaigad</div>
+        <div class="tl-desc">Local dhaba near the fort/jetty. Fresh catch of the day, sol kadhi. You've been going since 4:30 AM — sit down and eat properly. Rest here.</div>
+        <div class="tags"><span class="tag tag-rupee">₹130–150/person</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-beach"></div>
+      <div class="tl-card">
+        <div class="tl-time">2:15 PM → 3:55 PM</div>
+        <div class="tl-title">Jaigad Jetty + Coast Chill</div>
+        <div class="tl-desc">The fishing jetty nearby has local boats and fishermen. Or just sit near the fort entrance with the sea breeze. Lighthouse is right here — opens at 4 PM sharp. No need to move yet.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-spot"></div>
+      <div class="tl-card" style="border-color: var(--red); background: var(--red-pale);">
+        <div class="tl-time" style="color: var(--red);">4:00 PM → 5:00 PM</div>
+        <div class="tl-title">🔦 Jaigad Lighthouse</div>
+        <div class="tl-desc">Open ONLY 4–5 PM daily — 1 hour, no exceptions. ₹20/person entry. Climb to the top — 360° view of the Arabian Sea. The most visually spectacular point of the entire trip. Be here at 4 PM sharp, no later.</div>
+        <div class="tags"><span class="tag tag-imp">MUST NOT MISS</span><span class="tag tag-warn">4–5 PM ONLY</span><span class="tag tag-rupee">₹20/person</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Evening — Return + Bus</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="ride-card">
+        <span>🛵 Ride back south to Ganpatipule</span>
+        <span class="km">19 km · ~35 min</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-ride"></div>
+      <div class="tl-card">
+        <div class="tl-time">5:40 PM</div>
+        <div class="tl-title">Return Scooties to Rental Shop</div>
+        <div class="tl-desc">Return by 5:40 PM. Collect deposit. This is the last ride of the trip.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-bus"></div>
+      <div class="tl-card" style="border-color: var(--red); background: var(--red-pale);">
+        <div class="tl-time" style="color: var(--red);">5:45 – 6:30 PM</div>
+        <div class="tl-title">🚌 Board Return Bus — Ganpatipule → Navi Mumbai</div>
+        <div class="tl-desc">Boarding: Ganpatipule Bus Stand or Hotel Darya Sarang pickup point. Operators: Vakratund Travels / Swami Travels / Navalai Travels. Choose drop point nearest to your home — Panvel / Nerul / Kharghar / Belapur CBD. Journey ~10 hrs.</div>
+        <div class="tags"><span class="tag tag-rupee">₹500–650/person sleeper</span><span class="tag tag-warn">Book on RedBus NOW</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RETURN -->
+<div class="day-section fade-in" id="return">
+  <div class="day-header">
+    <div class="day-badge badge-mon">
+      <div class="day-num">30</div>
+      <div class="day-name">Monday</div>
+    </div>
+    <div class="day-header-text">
+      <h2>Back Home in Navi Mumbai</h2>
+      <p>Overnight bus drops you at Panvel / Nerul / Kharghar by 4–5 AM. Home before 10 AM.</p>
+      <span class="dir-tag dir-home">Home by 10 AM ✓</span>
+    </div>
+  </div>
+
+  <div class="callout callout-success">
+    <span class="callout-icon">✅</span>
+    <div class="callout-content">
+      <strong>You'll reach home well within 1–2 PM target</strong>
+      Bus boards Sunday 5:45–6:30 PM. Journey ~10 hrs. Drop at Panvel/Nerul/Kharghar ~4–5 AM Monday. Local transport to home = 10 AM at the latest.
+    </div>
+  </div>
+
+  <div class="section-label">Monday 30 March</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot dot-bus"></div>
+      <div class="tl-card">
+        <div class="tl-time">4:00 – 5:00 AM</div>
+        <div class="tl-title">Bus Drops at Navi Mumbai</div>
+        <div class="tl-desc">Drop points: Panvel ST Stand / Nerul / Kharghar / Belapur CBD. Choose the stop closest to your home when booking the ticket on RedBus.</div>
+        <div class="tags"><span class="tag tag-imp">Pick correct drop point</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot dot-spot"></div>
+      <div class="tl-card">
+        <div class="tl-time">By 10:00 AM</div>
+        <div class="tl-title">Home in Navi Mumbai ✅</div>
+        <div class="tl-desc">Well within the 1–2 PM target. Sleep on the bus — you'll have fully earned it after a 4:30 AM start and two packed days.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">How to Book Return Bus</div>
+  <div class="info-card">
+    <h3>🎟 RedBus / Goibibo Booking Steps</h3>
+    <ul>
+      <li>Search: <strong>Ganpatipule to Panvel</strong> (or Nerul/Kharghar)</li>
+      <li>Date: <strong>Sunday 29 March 2025</strong></li>
+      <li>Filter: Departure 5:00 PM – 7:00 PM</li>
+      <li>Operators: Vakratund Travels / Swami Travels / Navalai Travels</li>
+      <li>Choose: Sleeper seat for comfort (10 hr journey)</li>
+      <li>Drop point: Pick closest to your home in Navi Mumbai</li>
+      <li>Fare: ₹500–650 per person</li>
+    </ul>
+  </div>
+
+  <div class="callout callout-red">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-content">
+      <strong>Book the return bus today — not later</strong>
+      Sunday evening buses from Ganpatipule fill up fast, especially for Navi Mumbai / Pune routes. If you wait till Saturday or Sunday, seats will be gone. Book right now as a group.
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div class="day-section fade-in" id="budget">
+
+  <div class="budget-total">
+    <div>
+      <div class="bt-label">Estimated per person total</div>
+      <div class="bt-val">₹2,200 – ₹2,350</div>
+      <div class="bt-sub">Group pool: ₹15,400 – ₹16,450 for 7 people</div>
+    </div>
+    <div style="font-size:36px;">💰</div>
+  </div>
+
+  <div class="section-label">Per Person Breakdown</div>
+  <div class="breakdown-table">
+    <div class="bt-row">
+      <span class="bt-row-label">🏠 Bhakta Niwas — Sat night only (₹1,400 ÷ 7)</span>
+      <span class="bt-row-amt">₹200</span>
+    </div>
+    <div class="bt-row">
+      <span class="bt-row-label">🛵 3 Scooties × ₹700 × 2 days ÷ 7 people</span>
+      <span class="bt-row-amt">₹600</span>
+    </div>
+    <div class="bt-row">
+      <span class="bt-row-label">🍽 Food — 6 meals avg ₹120 each</span>
+      <span class="bt-row-amt">₹720</span>
+    </div>
+    <div class="bt-row">
+      <span class="bt-row-label">🚌 Return bus Ganpatipule → Navi Mumbai</span>
+      <span class="bt-row-amt">₹500–650</span>
+    </div>
+    <div class="bt-row">
+      <span class="bt-row-label">🎟 Lighthouse entry + misc activities</span>
+      <span class="bt-row-amt">₹150–200</span>
+    </div>
+    <div class="bt-row total-row">
+      <span class="bt-row-label">Total per person</span>
+      <span class="bt-row-amt">₹2,170 – ₹2,370</span>
+    </div>
+  </div>
+
+  <div class="section-label">Cost per Category</div>
+  <div class="budget-grid">
+    <div class="budget-card">
+      <div class="bc-icon">🛵</div>
+      <div class="bc-label">Transport (Scooties)</div>
+      <div class="bc-amount">₹600</div>
+      <div class="bc-sub">₹2,100/day × 2 days ÷ 7</div>
+    </div>
+    <div class="budget-card">
+      <div class="bc-icon">🚌</div>
+      <div class="bc-label">Return Bus</div>
+      <div class="bc-amount">₹575</div>
+      <div class="bc-sub">Avg of ₹500–650 range</div>
+    </div>
+    <div class="budget-card">
+      <div class="bc-icon">🍽</div>
+      <div class="bc-label">Food</div>
+      <div class="bc-amount">₹720</div>
+      <div class="bc-sub">6 meals avg ₹120</div>
+    </div>
+    <div class="budget-card">
+      <div class="bc-icon">🏠</div>
+      <div class="bc-label">Stay</div>
+      <div class="bc-amount">₹200</div>
+      <div class="bc-sub">Sat night only (1 night)</div>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">💡</span>
+    <div class="callout-content">
+      <strong>Slightly over ₹2k avg — easy to fix</strong>
+      Total group shortfall is only ₹1,400–2,450 max. Friends with higher budgets (₹2,500+) can cover those with lower ones. Or skip the zip line (₹150) to save some. The scooty rental on Day 1 is what pushes it slightly over.
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⛽</span>
+    <div class="callout-content">
+      <strong>Petrol not included</strong>
+      3 scooties riding ~140 km over 2 days ≈ 4–5 litres total ≈ ₹600 petrol ÷ 7 = ~₹85/person extra. Check tank on pickup and top up at the petrol pump near the temple road.
+    </div>
+  </div>
+</div>
+
+<!-- INFO -->
+<div class="day-section fade-in" id="info">
+
+  <div class="section-label">Scooty Arrangement</div>
+  <div class="info-card">
+    <h3>🛵 3 Scooties · 7 People</h3>
+    <div class="scooty-seats">
+      <div class="seat-card">
+        <div class="seat-icon">🛵</div>
+        <div class="seat-label">Scooty 1</div>
+        <div class="seat-names">Rider + 2 pillion</div>
+      </div>
+      <div class="seat-card">
+        <div class="seat-icon">🛵</div>
+        <div class="seat-label">Scooty 2</div>
+        <div class="seat-names">Rider + 2 pillion</div>
+      </div>
+      <div class="seat-card">
+        <div class="seat-icon">🛵</div>
+        <div class="seat-label">Scooty 3</div>
+        <div class="seat-names">Rider + 2 pillion</div>
+      </div>
+    </div>
+    <p style="margin-top:12px; font-size:12px; color:var(--light);">All 3 riders must carry original driving licence — not DigiLocker screenshot. Police in Ratnagiri district check tourists. Helmets mandatory for at least the rider.</p>
+  </div>
+
+  <div class="section-label">Important Contacts</div>
+  <div class="info-card">
+    <h3>📞 Book These Before You Leave</h3>
+    <ul>
+      <li><strong>Bhakta Niwas:</strong> +91 86699 31145 — Book 2 rooms, Saturday night only</li>
+      <li><strong>Ganpatipule Mandir info:</strong> +91 86699 31141</li>
+      <li><strong>Scooty rental:</strong> Ask at Bhakta Niwas reception on arrival, or shops near the temple entrance on the main road</li>
+      <li><strong>Return bus:</strong> Book on RedBus — search "Ganpatipule to Panvel" Sunday 29 March</li>
+    </ul>
+  </div>
+
+  <div class="section-label">Spot Details</div>
+  <div class="info-card">
+    <h3>📍 All Spots at a Glance</h3>
+    <ul>
+      <li><strong>Ganpatipule Mandir</strong> — Open 5 AM–9 PM. Free. 1 km walk from Bhakta Niwas. Swayambhu (self-emerged) Ganesha idol.</li>
+      <li><strong>Arey Vare Beach</strong> — 14 km south. Open 24 hrs. Free entry. Activities: zip line ₹150, camel ride, bullock cart.</li>
+      <li><strong>Bhandarpule Viewpoint</strong> — 3–5 km from Arey Vare. Free. Hilltop view of Konkan coast.</li>
+      <li><strong>Jai Vinayak Mandir, Jaigad</strong> — 19 km north. Free. Built by JSW. Art gallery inside.</li>
+      <li><strong>Jaigad Fort</strong> — 2 km from Jai Vinayak. Free entry. 9 AM–6 PM. 16th century coastal fort.</li>
+      <li><strong>Jaigad Lighthouse</strong> — Right next to fort. ₹20 entry. <strong>Open ONLY 4–5 PM daily.</strong> Don't be late.</li>
+    </ul>
+  </div>
+
+  <div class="section-label">Tips</div>
+  <div class="info-card">
+    <h3>🌊 Things to Know</h3>
+    <ul>
+      <li>Hot water at Bhakta Niwas only in the morning — shower on arrival.</li>
+      <li>Fill petrol before the Day 2 dawn ride — petrol pumps won't be open at 5:30 AM.</li>
+      <li>Arey Vare water is calm enough to swim — enjoy it in the afternoon on Day 1.</li>
+      <li>Carry cash — most spots near Ganpatipule and Jaigad don't accept UPI reliably.</li>
+      <li>Sunday bus is your ride home — missing it means stuck till Monday morning buses. Don't miss it.</li>
+      <li>Konkani thali at beach shacks is better and cheaper than any restaurant near the temple.</li>
+      <li>Weather end of March: warm, some humidity. Light clothes, chappal + shoes both needed.</li>
+    </ul>
+  </div>
+
+  <div class="callout callout-red">
+    <span class="callout-icon">🔦</span>
+    <div class="callout-content">
+      <strong>Lighthouse reminder — most critical timing of the trip</strong>
+      Jaigad Lighthouse opens ONLY 4:00–5:00 PM. If you arrive at 5:01 PM it is closed. The entire Sunday plan is structured so you finish lunch by 2:15 PM and are waiting at the lighthouse by 3:55 PM. Don't let lunch or the fort overrun.
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<footer>
+  Made for the <strong>Ganpatipule Gang 🛵</strong> · 7 friends · 28–30 March 2025<br>
+  <span style="margin-top:4px; display:block;">Bappa bless the trip 🙏</span>
+</footer>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.day-section').forEach(s => {
+      s.classList.remove('active');
+      s.style.animation = 'none';
+    });
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+    const section = document.getElementById(id);
+    section.style.animation = 'none';
+    section.classList.add('active');
+    void section.offsetWidth;
+    section.style.animation = '';
+    section.classList.add('fade-in');
+
+    const tabs = ['day1','day2','return','budget','info'];
+    const idx = tabs.indexOf(id);
+    document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+
+    window.scrollTo({ top: document.querySelector('.nav-tabs').offsetTop - 1, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

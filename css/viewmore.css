@@ -218,7 +218,7 @@ nav {
 
 /* All Forts Section */
 #all-forts {
-    padding: 10rem 0 8rem;
+    padding: 3rem 0 8rem;
     background-color: var(--background-color);
     position: relative;
     overflow: hidden;
@@ -894,7 +894,7 @@ nav {
     }
     
     #all-forts {
-        padding: 8rem 0 6rem;
+        padding: 3rem 0 6rem;
     }
     
     .nav-links li {
@@ -961,7 +961,7 @@ nav {
 /* Mobile Landscape & Small Tablets */
 @media screen and (max-width: 768px) {
     #all-forts {
-        padding: 7rem 0 4rem;
+        padding: 2.5rem 0 4rem;
     }
     
     .search-container {
@@ -1018,7 +1018,7 @@ nav {
     }
 
     #all-forts {
-        padding: 5rem 0 3rem;
+        padding: 2rem 0 3rem;
     }
 
     .section-title {

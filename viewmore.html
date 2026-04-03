@@ -95,30 +95,32 @@ body {
 /* Header Styles */
 header {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 1000;
-    transition: var(--transition);
-    padding: 20px 0;
-    background-color: rgba(11, 1, 1, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    width: 90%;
+    max-width: 1200px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(15px);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 107, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 header.scrolled {
-    background-color: rgba(0, 0, 0, 0.95);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    padding: 12px 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 107, 0, 0.3);
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
+    padding: 15px 30px;
+    width: 100%;
 }
 
 .logo-container {
